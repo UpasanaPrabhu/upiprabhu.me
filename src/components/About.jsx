@@ -87,6 +87,7 @@ const About = ({ bio, socialLinks }) => (
                 <AboutLink
                     key={i}
                     // href={social.about_link[0].spans[0].data.url}
+                    href={""}
                     target="_blank" rel="noopener noreferrer">
                     {social.about_link[0].text}
                     <span>&#8594;</span>
@@ -97,7 +98,7 @@ const About = ({ bio, socialLinks }) => (
             {RichText.render(bio)}
         </AboutBio>
         <AboutActions>
-            <a href="mailto:marguerite.roth@gmail.com" target="_blank" rel="noopener noreferrer">
+            <a href="mailto:upiprabhu@gmail.com" target="_blank" rel="noopener noreferrer">
                 <Button className="Button--secondary">
                     Email me
                 </Button>

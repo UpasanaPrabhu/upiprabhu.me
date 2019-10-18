@@ -96,7 +96,7 @@ const WorkAction = styled(Link)`
 const RenderBody = ({ home, projects, meta }) => (
     <>
         <Helmet
-            title={meta.title}
+            title={`Home`}
             titleTemplate={`%s | ${meta.title}`}
             meta={[
                 {
@@ -137,13 +137,9 @@ const RenderBody = ({ home, projects, meta }) => (
             <>
                 {RichText.render(home.hero_title)}
             </>
-            <a href={home.hero_button_link.url}
-               target="_blank" rel="noopener noreferrer">
-                <Button>
-                    {RichText.render(home.hero_button_text)}
-                </Button>
-            </a>
+          
         </Hero>
+
         <Section>
             {projects.map((project, i) => (
                 <ProjectCard

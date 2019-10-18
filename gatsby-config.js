@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
-    title: `Prist | Gatsby & Prismic Starter`,
-        description: `A starter powered by Gatsby and Prismic to showcase portfolios and blogs.`,
-    author: `Marguerite Roth | marguerite.io`,
+    title: `upiprabhu.me`,
+        description: `Upasana's personal website to showcase projects and experiences`,
+    author: `Upasana Prabhu`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,

@@ -117,43 +117,45 @@ const ProjectCardAction = styled("div")`
 
 const ProjectCardImageContainer = styled("div")`
     background: ${colors.grey200};
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    overflow: hidden;
-    position: relative;
-    padding-left: 2em;
-    padding-right: 2em;
+    // display: flex;
+    // justify-content: center;
+    // overflow: hidden;
+    // position: relative;
+    // padding-left: 2em;
+    // padding-right: 2em;
 
-    @media(max-width:${dimensions.maxwidthTablet}px) {
-        padding-top: 3em;
-        max-height: 200px;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-    }
+    // @media(max-width:${dimensions.maxwidthTablet}px) {
+    //     padding-top: 3em;
+    //     max-height: 200px;
+    //     flex-direction: column;
+    //     align-items: center;
+    //     justify-content: flex-start;
+    // }
 
-    &:before {
-        position: absolute;
-        content: "";
-        width: 100%;
-        height: 100%;
-        left: 0;
-        top: 0;
-        background: ${colors.blue500};
-        mix-blend-mode: multiply;
-        opacity: 0;
-        transition: all 150ms ease-in-out;
-    }
+    // &:before {
+    //     position: absolute;
+    //     content: "";
+    //     width: 100%;
+    //     height: 100%;
+    //     left: 0;
+    //     top: 0;
+    //     background: ${colors.blue500};
+    //     mix-blend-mode: multiply;
+    //     opacity: 0;
+    //     transition: all 150ms ease-in-out;
+    // }
 
     img {
-        max-width: 400px;
+        // max-width: 400px;
+        height: 100%;
+        max-height: 500px;
         width: 100%;
+        object-fit: cover;
         box-shadow: 0px 4px 24px rgba(0, 0, 0, 0.04);
 
-        @media(max-width:${dimensions.maxwidthTablet}px) {
-            max-width: 300px;
-        }
+        // @media(max-width:${dimensions.maxwidthTablet}px) {
+        //     max-width: 300px;
+        // }
     }
 `
 

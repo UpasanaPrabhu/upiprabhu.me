@@ -15,6 +15,18 @@ const HeaderContent = styled("div")`
     justify-content: space-between;
 `
 
+const LogoLink = styled("div")`
+    a {
+        color: currentColor;
+        text-decoration: none;
+
+        &:hover {
+            color: ${colors.blue500};
+            transition: 100ms ease-in-out background;
+        }
+    }
+`
+
 const HeaderLinks = styled("div")`
     display: grid;
     grid-template-columns: repeat(2, auto);
@@ -75,9 +87,12 @@ const HeaderLinks = styled("div")`
 const Header = () => (
     <HeaderContainer>
         <HeaderContent>
-            <Link to="/">
-                <Logo/>
-            </Link>
+            <LogoLink>
+                <Link to="/">
+                    <h3>upasana</h3>
+                </Link>
+            </LogoLink>
+
             <HeaderLinks>
                 <Link
                     activeClassName="Link--is-active"
