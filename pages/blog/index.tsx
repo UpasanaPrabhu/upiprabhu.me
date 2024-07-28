@@ -29,7 +29,7 @@ const BlogGrid = styled("div")`
 export default function Blog({ posts, meta }) {
     return (
         <>
-            {/* <Helmet
+            <Helmet
                 title={`Blog`}
                 titleTemplate={`%s | upiprabhu.me`}
                 meta={[
@@ -66,7 +66,7 @@ export default function Blog({ posts, meta }) {
                         content: meta.description,
                     },
                 ].concat(meta)}
-            /> */}
+            />
             <Layout>
                 <BlogTitle>
                     Blog
@@ -104,8 +104,6 @@ export const getStaticProps: GetStaticProps = async () => {
         description: "Upasana's blog posts and articles",
         author: 'Upasana Prabhu',
     }
-
-    console.log("posts", posts)
 
     return {
         props: {
