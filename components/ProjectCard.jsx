@@ -1,12 +1,12 @@
 import React from "react";
-import { Link } from "next/link";
+import Link from "next/link";
 import { PrismicRichText } from "@prismicio/react";
 import styled from "@emotion/styled";
 import dimensions from "../styles/dimensions";
 import colors from "../styles/colors";
 import PropTypes from "prop-types";
 
-const ProjectCardContainer = styled()`
+const ProjectCardContainer = styled(Link)`
     display: grid;
     grid-template-columns: 4fr 7fr;
     box-shadow: 0px 9px 24px rgba(0, 0, 0, 0.06);
@@ -160,7 +160,7 @@ const ProjectCardImageContainer = styled("div")`
 `
 
 const ProjectCard = ({ category, title, description, thumbnail, uid}) => (
-    <ProjectCardContainer to={`/work/${uid}`}>
+    <ProjectCardContainer href={`/work/${uid}`}>
         <ProjectCardContent className="ProjectCardContent">
             <ProjectCardCategory>
                 {category[0].text}
