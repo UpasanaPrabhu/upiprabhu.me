@@ -1,9 +1,8 @@
 import React from "react";
-import { Link } from "gatsby";
 import styled from "@emotion/styled";
-import colors from "styles/colors";
-import dimensions from "styles/dimensions";
-import Logo from "components/_ui/Logo";
+import colors from "../styles/colors";
+import dimensions from "../styles/dimensions";
+import Link from "next/link"
 
 const HeaderContainer = styled("div")`
     padding-top: 3.75em;
@@ -88,7 +87,7 @@ const Header = () => (
     <HeaderContainer>
         <HeaderContent>
             <LogoLink>
-                <Link to="/">
+                <Link href="/">
                     <h3>upasana</h3>
                 </Link>
             </LogoLink>
@@ -96,12 +95,12 @@ const Header = () => (
             <HeaderLinks>
                 <Link
                     activeClassName="Link--is-active"
-                    to="/work">
+                    href="/work">
                     Work
                 </Link>
                 <Link
                     activeClassName="Link--is-active"
-                    to="/blog">
+                    href="/blog">
                     Blog
                 </Link>
             </HeaderLinks>

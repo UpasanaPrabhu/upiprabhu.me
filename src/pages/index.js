@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Helmet from "react-helmet";
-import { RichText } from "prismic-reactjs";
+import { PrismicRichText } from "@prismicio/react";
 import { graphql, Link } from "gatsby";
 import styled from "@emotion/styled";
 import colors from "styles/colors";
@@ -135,7 +135,7 @@ const RenderBody = ({ home, projects, meta }) => (
         />
         <Hero>
             <>
-                {RichText.render(home.hero_title)}
+                <PrismicRichText field={home.hero_title} />
             </>
           
         </Hero>
@@ -156,7 +156,7 @@ const RenderBody = ({ home, projects, meta }) => (
             </WorkAction>
         </Section>
         <Section>
-            {RichText.render(home.about_title)}
+            <PrismicRichText field={home.about_title} />
             <About
                 bio={home.about_bio}
                 socialLinks={home.about_links}

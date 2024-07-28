@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import Moment from 'react-moment';
 import { graphql } from 'gatsby';
-import { RichText } from "prismic-reactjs";
+import { PrismicRichText } from "@prismicio/react";
 import styled from "@emotion/styled";
 import colors from "styles/colors";
 import Layout from "components/Layout";
@@ -135,10 +135,10 @@ const Post = ({ post, meta }) => {
             />
             <Layout>
                 <PostCategory>
-                    {RichText.render(post.post_category)}
+                    <PrismicRichText field={post.post_category} />
                 </PostCategory>
                 <PostTitle>
-                    {RichText.render(post.post_title)}
+                    <PrismicRichText field={post.post_title} />
                 </PostTitle>
                 <PostMetas>
                     <PostAuthor>
@@ -152,12 +152,12 @@ const Post = ({ post, meta }) => {
                     <PostHeroContainer>
                         <img src={post.post_hero_image.url} alt="bees" />
                         <PostHeroAnnotation>
-                            {RichText.render(post.post_hero_annotation)}
+                            <PrismicRichText field={post.post_hero_annotation} />
                         </PostHeroAnnotation>
                     </PostHeroContainer>
                 )}
                 <PostBody>
-                    {RichText.render(post.post_body)}
+                    <PrismicRichText field={post.post_body} />
                 </PostBody>
             </Layout>
         </>

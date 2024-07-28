@@ -1,9 +1,9 @@
 import React from "react";
-import Button from "components/_ui/Button";
+import Button from "./_ui/Button";
 import styled from "@emotion/styled";
-import dimensions from "styles/dimensions";
-import { RichText } from "prismic-reactjs";
+import dimensions from "../styles/dimensions";
 import PropTypes from "prop-types";
+import { PrismicRichText } from "@prismicio/react";
 
 const AboutContainer = styled("div")`
     padding-top: 1em;
@@ -95,7 +95,7 @@ const About = ({ bio, socialLinks }) => (
             ))}
         </AboutLinkContainer>
         <AboutBio>
-            {RichText.render(bio)}
+            <PrismicRichText field={bio} />
         </AboutBio>
         <AboutActions>
             <a href="mailto:upiprabhu@gmail.com" target="_blank" rel="noopener noreferrer">

@@ -4,7 +4,7 @@ import Helmet from "react-helmet";
 import styled from "@emotion/styled";
 import colors from "styles/colors";
 import { Link, graphql } from 'gatsby';
-import { RichText } from "prismic-reactjs";
+import { PrismicRichText } from "@prismicio/react";
 import Button from "components/_ui/Button";
 import Layout from "components/Layout";
 
@@ -93,7 +93,7 @@ const Project = ({ project, meta }) => {
             />
             <Layout>
                 <ProjectTitle>
-                    {RichText.render(project.project_title)}
+                    <PrismicRichText field={project.project_title} />
                 </ProjectTitle>
                 {project.project_hero_image && (
                     <ProjectHeroContainer>
@@ -101,7 +101,7 @@ const Project = ({ project, meta }) => {
                     </ProjectHeroContainer>
                 )}
                 <ProjectBody>
-                    {RichText.render(project.project_description)}
+                    <PrismicRichText field={project.project_description} />
                     <WorkLink to={"/work"}>
                         <Button className="Button--secondary">
                             See other work

@@ -1,5 +1,5 @@
-import css from '@emotion/css';
-import dimensions from "styles/dimensions";
+import { css } from "@emotion/react";
+import dimensions from "./dimensions";
 
 const typeStyles = css`
     h1 {

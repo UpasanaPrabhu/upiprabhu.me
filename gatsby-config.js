@@ -1,18 +1,15 @@
 module.exports = {
   siteMetadata: {
     title: `upiprabhu.me`,
-        description: `Upasana's personal website to showcase projects and experiences`,
+    description: `Upasana's personal website to showcase projects and experiences`,
     author: `Upasana Prabhu`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
-    `gatsby-transformer-sharp`,
+    `gatsby-plugin-image`,
     `gatsby-plugin-sharp`,
-    `gatsby-image`,
+    `gatsby-transformer-sharp`,
     `gatsby-plugin-catch-links`,
-    `gatsby-plugin-sass`,
-    `gatsby-plugin-resolve-src`,
-    `gatsby-plugin-remove-trailing-slashes`,
     `gatsby-plugin-emotion`,
     {
       resolve: `gatsby-source-filesystem`,
@@ -21,25 +18,37 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
-    `gatsby-transformer-sharp`,
-    `gatsby-plugin-sharp`,
     {
-        resolve: 'gatsby-source-prismic-graphql',
-        options: {
-            repositoryName: 'upiprabhu', // (REQUIRED, replace with your own)
-            linkResolver: () => post => `/${post.uid}`,
-        }
+      resolve: 'gatsby-source-prismic',
+      options: {
+        repositoryName: 'upiprabhu',
+        linkResolver: ({ node, key, value }) => post => `/${post.uid}`,
+      }
     },
-    // https://www.gatsbyjs.org/packages/gatsby-plugin-google-analytics/
     {
-        resolve: `gatsby-plugin-google-analytics`,
-        options: {
-            trackingId: "YOUR_GOOGLE_ANALYTICS_TRACKING_ID",
-            head: true,
+      resolve: `gatsby-plugin-google-gtag`,
+      options: {
+        trackingIds: ["YOUR_GOOGLE_ANALYTICS_TRACKING_ID"],
+        gtagConfig: {
+          anonymize_ip: true,
         },
+        pluginConfig: {
+          head: true,
+        },
+      },
     },
-    // this (optional) plugin enables Progressive Web App + Offline functionality
-    // To learn more, visit: https://gatsby.dev/offline
-    // `gatsby-plugin-offline`,
+    {
+      resolve: `gatsby-plugin-manifest`,
+      options: {
+        name: `Upasana Prabhu's Website`,
+        short_name: `upiprabhu.me`,
+        start_url: `/`,
+        background_color: `#ffffff`,
+        theme_color: `#663399`,
+        display: `minimal-ui`,
+        icon: `src/images/favicon.png`, // This path is relative to the root of the site. Ensure this file exists.
+      },
+    },
+    `gatsby-plugin-offline`,
   ],
 }
