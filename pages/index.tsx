@@ -9,13 +9,24 @@ import Layout from '../components/Layout'
 import SectionHeader from '../components/SectionHeader'
 import colors from '../styles/colors'
 import dimensions from '../styles/dimensions'
-import { Heading } from '@chakra-ui/react'
 
 const Hero = styled('div')`
   padding-top: 2em;
   padding-bottom: 2em;
 
   h1 {
+    font-size: 2em;
+    line-height: 1.45;
+    font-weight: 800;
+
+    @media(max-width:${dimensions.maxwidthTablet}px) {
+        font-size: 2.25em;
+    }
+
+    @media(max-width:${dimensions.maxwidthMobile}px) {
+        font-size: 2em;
+    }
+        
     a {
       text-decoration: none;
       transition: all 100ms ease-in-out;
@@ -86,16 +97,14 @@ const WorkAction = styled(Link)`
 
 export default function Home({ home, projects, meta, posts }) {
   return (
-    <Layout className='chakra-scope'>
+    <Layout className='chakra-scope' home={home}>
       <Head>
         <title>{meta.title}</title>
         <meta name="description" content={meta.description} />
       </Head>
 
       <Hero>
-        <Heading>
-          <PrismicRichText field={home.hero_title} />
-        </Heading>
+        <PrismicRichText field={home.hero_title} />
       </Hero>
 
       <SectionHeader title="Projects" seeMoreLink='/work' />

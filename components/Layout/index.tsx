@@ -1,5 +1,6 @@
 import { Box, Container } from '@chakra-ui/react'
 import Navigation from '../Navigation'
+import Footer from '../Footer'
 
 const Layout = ({children, wide=false, headerOffset=true, ...rest}) => {
   return (
@@ -8,7 +9,7 @@ const Layout = ({children, wide=false, headerOffset=true, ...rest}) => {
       <Container maxW={wide ? 'container.lg' : 'container.md'}>
         {children}
       </Container>
-      {/* <Footer wide={wide} /> */}
+      <Footer wide={wide} />
     </Box>
   )
 }

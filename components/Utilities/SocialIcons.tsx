@@ -22,10 +22,9 @@ const SocialIconLink = ({Icon, link, ...rest}:SocialIconLinkProps&StackProps) =>
 
 const SocialIcons = (props: StackProps) => (
   <Stack isInline fontSize="2em" {...props}>
-    <SocialIconLink Icon={FiTwitter} link="https://twitter.com/SrinjoyMajumdar" />
-    <SocialIconLink Icon={FiGithub} link="https://github.com/srinjoym" mx={2} />
-    <SocialIconLink Icon={FiLinkedin} link="https://www.linkedin.com/in/srinjoym" mx={2}/>
-    <SocialIconLink Icon={FiMail} link="mailto:srinjoy.majumdar@gmail.com" mx={2}/>
+    <SocialIconLink Icon={FiTwitter} link="https://x.com/upiprabhu" />
+    <SocialIconLink Icon={FiLinkedin} link="https://www.linkedin.com/in/upasana-prabhu-51960831/" mx={2}/>
+    <SocialIconLink Icon={FiMail} link="mailto:upiprabhu@gmail.com" mx={2}/>
   </Stack>
 )
 

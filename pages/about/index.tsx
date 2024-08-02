@@ -8,6 +8,7 @@ import About from '../../components/About'
 import Layout from '../../components/Layout'
 import colors from '../../styles/colors'
 import dimensions from '../../styles/dimensions'
+import { Heading } from '@chakra-ui/react'
 
 const Hero = styled('div')`
   padding-top: 1em;
@@ -19,8 +20,6 @@ const Hero = styled('div')`
   }
 
   h1 {
-    margin-bottom: 1em;
-
     a {
       text-decoration: none;
       transition: all 100ms ease-in-out;
@@ -98,10 +97,11 @@ export default function Home({ home, projects, meta }) {
       </Head>
 
       <Section>
-        <PrismicRichText field={home.about_title} />
+        <Heading>
+          {home.about_title[0].text}
+        </Heading>
         <About
           bio={home.about_bio}
-          socialLinks={home.about_links}
         />
       </Section>
     </Layout>

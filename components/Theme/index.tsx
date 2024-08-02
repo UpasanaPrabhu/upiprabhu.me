@@ -33,6 +33,10 @@ export const theme = extendTheme({
           unicodeBidi: "isolate",
         }
       },
+      button: {
+        paddingLeft: "16px !important",
+        paddingRight: "16px !important",
+      }
     }),
   },
 })

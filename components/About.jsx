@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import { PrismicRichText } from "@prismicio/react";
 
 const AboutContainer = styled("div")`
-    padding-top: 1em;
 `
 
 const AboutLinkContainer = styled("div")`
@@ -60,25 +59,6 @@ const About = ({ bio, socialLinks }) => (
         <AboutBio>
             <PrismicRichText field={bio} />
         </AboutBio>
-        <AboutLinkContainer>
-            {socialLinks.map((social, i) => (
-                <AboutLink
-                    key={i}
-                    href={social.about_link[0].spans[0].data.url}
-                    //href={""}
-                    target="_blank" rel="noopener noreferrer">
-                    {social.about_link[0].text}
-                    <span>&#8594;</span>
-                </AboutLink>
-            ))}
-        </AboutLinkContainer>
-        <AboutActions>
-            <a href="mailto:upiprabhu@gmail.com" target="_blank" rel="noopener noreferrer">
-                <Button className="Button--secondary">
-                    Email me
-                </Button>
-            </a>
-        </AboutActions>
     </AboutContainer>
 )
 
