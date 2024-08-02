@@ -94,7 +94,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
     const posts = await client.getAllByType('post', {
         orderings: {
-            field: 'my.post.date',
+            field: 'my.post.post_date',
             direction: 'desc',
         },
     })
