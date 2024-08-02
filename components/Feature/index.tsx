@@ -3,6 +3,7 @@ import { Image, Box, Heading, Text, Flex, useColorMode, Button, FlexProps, Link 
 import NextLink from 'next/link'
 import styled from '@emotion/styled'
 import { PrismicRichText } from '@prismicio/react'
+import { RichTextField } from '@prismicio/client'
 
 const ClampContainer = styled(Box)`
   display: -webkit-box;
@@ -20,7 +21,7 @@ type ButtonData = {
 
 type CardProps = {
   title: string
-  desc: string
+  desc: RichTextField
   link: string
   imageLink: string
   date: string
@@ -36,7 +37,7 @@ const Feature:FunctionComponent<CardProps&FlexProps> = ({title, desc, link, imag
       <Box flexGrow={1}>
         <LinkWrapper href={link}>
           <Heading cursor="pointer" fontSize={["md", "md", "md", "md"]}>
-            {title[0].text}
+            {title[0]['text']}
           </Heading>
         </LinkWrapper>
         <ClampContainer mt={2} fontSize={["sm", "sm", "sm", "sm"]}>

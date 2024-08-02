@@ -1,7 +1,7 @@
 import React from 'react'
 import { Stack, StackProps, Link, Box } from '@chakra-ui/react'
 import { FiTwitter, FiGithub, FiLinkedin, FiMail } from 'react-icons/fi'
-import { IconType } from 'react-icons/lib/cjs'
+import { IconType } from 'react-icons'
 
 interface SocialIconLinkProps {
   Icon: IconType,
