@@ -7,30 +7,11 @@ import { PrismicRichText } from "@prismicio/react";
 
 const AboutContainer = styled("div")`
     padding-top: 1em;
-    display: grid;
-    grid-template-columns: 8em 1fr 8em;
-    grid-gap: 3em;
-
-    @media(max-width: ${dimensions.maxwidthTablet}px) {
-        grid-template-columns: 1fr 3fr 1fr;
-    }
-
-    @media(max-width: ${dimensions.maxwidthMobile}px) {
-        grid-template-columns: 7em 1fr;
-        grid-template-rows: 3em 1fr;
-        grid-gap: 2em;
-    }
 `
 
 const AboutLinkContainer = styled("div")`
-    padding-top: 1em;
-    padding-bottom: 3em;
     display: flex;
     flex-direction: column;
-
-    @media(max-width: ${dimensions.maxwidthMobile}px) {
-        grid-row: 2;
-    }
 `
 
 const AboutLink = styled("a")`
@@ -59,12 +40,6 @@ const AboutLink = styled("a")`
 
 const AboutBio = styled("div")`
     padding-bottom: 3em;
-    max-width: 480px;
-
-
-    @media(max-width: ${dimensions.maxwidthMobile}px) {
-        grid-row: 2;
-    }
 `
 
 const AboutActions = styled("div")`
@@ -82,6 +57,9 @@ const AboutActions = styled("div")`
 
 const About = ({ bio, socialLinks }) => (
     <AboutContainer>
+        <AboutBio>
+            <PrismicRichText field={bio} />
+        </AboutBio>
         <AboutLinkContainer>
             {socialLinks.map((social, i) => (
                 <AboutLink
@@ -94,9 +72,6 @@ const About = ({ bio, socialLinks }) => (
                 </AboutLink>
             ))}
         </AboutLinkContainer>
-        <AboutBio>
-            <PrismicRichText field={bio} />
-        </AboutBio>
         <AboutActions>
             <a href="mailto:upiprabhu@gmail.com" target="_blank" rel="noopener noreferrer">
                 <Button className="Button--secondary">

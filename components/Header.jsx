@@ -5,8 +5,8 @@ import dimensions from "../styles/dimensions";
 import Link from "next/link"
 
 const HeaderContainer = styled("div")`
-    padding-top: 3.75em;
-    padding-bottom: 3em;
+    padding-top: 1em;
+    padding-bottom: 1em;
 `
 
 const HeaderContent = styled("div")`

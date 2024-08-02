@@ -50,17 +50,12 @@ const PostCategory = styled("div")`
 `
 
 const PostTitle = styled("div")`
-    max-width: 550px;
-    margin: 0 auto;
-    text-align: center;
-
     h1 {
         margin-top: 0;
     }
 `
 
 const PostBody = styled("div")`
-    max-width: 550px;
     margin: 0 auto;
 
     .block-img {
@@ -135,20 +130,9 @@ const Post = ({ post, meta }) => {
             />
 
             <Layout>
-                <PostCategory>
-                    <PrismicRichText field={post.post_category} />
-                </PostCategory>
                 <PostTitle>
                     <PrismicRichText field={post.post_title} />
                 </PostTitle>
-                <PostMetas>
-                    <PostAuthor>
-                        {post.post_author}
-                    </PostAuthor>
-                    <PostDate>
-                        <Moment format="MMMM D, YYYY">{post.post_date}</Moment>
-                    </PostDate>
-                </PostMetas>
                     {post.post_hero_image && (
                     <PostHeroContainer>
                         <img src={post.post_hero_image.url} alt="bees" />
@@ -157,7 +141,7 @@ const Post = ({ post, meta }) => {
                         </PostHeroAnnotation>
                     </PostHeroContainer>
                 )}
-                <PostBody>
+                <PostBody className="reset-scope">
                     <PrismicRichText field={post.post_body} />
                 </PostBody>
             </Layout>

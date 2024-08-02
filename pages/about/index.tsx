@@ -1,21 +1,26 @@
-import styled from '@emotion/styled'
-import { createClient } from '@prismicio/client'
-import { PrismicRichText } from '@prismicio/react'
 import { GetStaticProps } from 'next'
 import Head from 'next/head'
 import Link from 'next/link'
-import Feature from '../components/Feature'
-import Layout from '../components/Layout'
-import SectionHeader from '../components/SectionHeader'
-import colors from '../styles/colors'
-import dimensions from '../styles/dimensions'
-import { Heading } from '@chakra-ui/react'
+import { createClient } from '@prismicio/client'
+import { PrismicRichText } from '@prismicio/react'
+import styled from '@emotion/styled'
+import About from '../../components/About'
+import Layout from '../../components/Layout'
+import colors from '../../styles/colors'
+import dimensions from '../../styles/dimensions'
 
 const Hero = styled('div')`
-  padding-top: 2em;
-  padding-bottom: 2em;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  max-width: 830px;
+
+  @media(max-width:${dimensions.maxwidthMobile}px) {
+    margin-bottom: 3em;
+  }
 
   h1 {
+    margin-bottom: 1em;
+
     a {
       text-decoration: none;
       transition: all 100ms ease-in-out;
@@ -84,53 +89,21 @@ const WorkAction = styled(Link)`
   }
 `
 
-export default function Home({ home, projects, meta, posts }) {
+export default function Home({ home, projects, meta }) {
   return (
-    <Layout className='chakra-scope'>
+    <Layout>
       <Head>
         <title>{meta.title}</title>
         <meta name="description" content={meta.description} />
       </Head>
 
-      <Hero>
-        <Heading>
-          <PrismicRichText field={home.hero_title} />
-        </Heading>
-      </Hero>
-
-      <SectionHeader title="Projects" seeMoreLink='/work' />
-      {
-        projects.map((project, i) => {
-          return (
-            <Feature 
-              key={i}
-              title={project.data.project_title}
-              desc={project.data.project_preview_description}
-              link={`/work/${project.uid}`}
-              imageLink={project.data.project_preview_thumbnail.url}
-              date={project.data.project_post_date}
-              isExternal={false}
-            />
-          )
-        })
-      }
-
-      <SectionHeader title="Blog Posts" seeMoreLink='/blog' />
-      {
-        posts.map((post, i) => {
-          return (
-            <Feature 
-              key={i}
-              title={post.data.post_title}
-              desc={post.data.post_preview_description}
-              link={`/blog/${post.uid}`}
-              imageLink={post.data.post_hero_image.url}
-              date={post.data.post_date}
-              isExternal={false}
-            />
-          )
-        })
-      }
+      <Section>
+        <PrismicRichText field={home.about_title} />
+        <About
+          bio={home.about_bio}
+          socialLinks={home.about_links}
+        />
+      </Section>
     </Layout>
   )
 }
@@ -141,20 +114,10 @@ export const getStaticProps: GetStaticProps = async () => {
   const home = await client.getSingle('homepage')
   const projects = await client.getAllByType('project', {
     orderings: {
-      field: 'my.project.project_post_date',
+      field: 'my.project.date',
       direction: 'desc',
     },
-    limit: 3,
   })
-
-  const posts = await client.getAllByType('post', {
-    orderings: {
-      field: 'my.post.post_date',
-      direction: 'desc',
-    },
-    limit: 3,
-  })
-
   const meta = {
     title: 'Upasana Prabhu',
     description: "Upasana's personal website to showcase projects and experiences",
@@ -164,8 +127,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       home: home.data,
-      projects: projects,
-      posts: posts,
+      projects: projects.map(p => p.data),
       meta,
     },
   }

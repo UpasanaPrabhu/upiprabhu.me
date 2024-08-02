@@ -45,6 +45,10 @@ const globalStyles = css`
         height: 100%;
         min-height: 100% !important;
     }
+
+    .chakra-scope button {
+        padding: unset !important;
+    }
 `
 
 export default globalStyles;

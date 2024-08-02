@@ -5,12 +5,16 @@ import { repositoryName } from '../prismicio'
 
 import Link from 'next/link'
 import '../styles/fonts.scss';
+import { ChakraProvider } from '@chakra-ui/react'
+import { theme } from '../components/Theme'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <PrismicProvider internalLinkComponent={(props) => <Link {...props} />}>
       <PrismicPreview repositoryName={repositoryName}>
-        <Component {...pageProps} />
+        <ChakraProvider theme={theme} resetScope='.chakra-scope'>
+          <Component {...pageProps} />
+        </ChakraProvider>
       </PrismicPreview>
     </PrismicProvider>
   )

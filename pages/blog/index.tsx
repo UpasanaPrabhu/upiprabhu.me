@@ -5,6 +5,9 @@ import Helmet from "react-helmet";
 import Layout from "../../components/Layout";
 import PostCard from "../../components/PostCard";
 import dimensions from "../../styles/dimensions";
+import Feature from "../../components/Feature";
+import SectionHeader from "../../components/SectionHeader";
+import { Heading } from "@chakra-ui/react";
 
 const BlogTitle = styled("h1")`
     margin-bottom: 1em;
@@ -28,7 +31,7 @@ const BlogGrid = styled("div")`
 
 export default function Blog({ posts, meta }) {
     return (
-        <>
+        <div className='chakra-scope'>
             <Helmet
                 title={`Blog`}
                 titleTemplate={`%s | upiprabhu.me`}
@@ -68,24 +71,29 @@ export default function Blog({ posts, meta }) {
                 ].concat(meta)}
             />
             <Layout>
-                <BlogTitle>
-                    Blog
-                </BlogTitle>
-                <BlogGrid>
-                    {posts.map((post, i) => (
-                        <PostCard
-                            key={i}
-                            author={post.node.post_author}
-                            category={post.node.post_category}
-                            title={post.node.post_title}
-                            date={post.node.post_date}
-                            description={post.node.post_preview_description}
-                            uid={post.node._meta.uid}
-                        />
-                    ))}
-                </BlogGrid>
+                <Heading my={4} size="lg">Blog</Heading>
+                {posts.map((post, i) => (
+                    // <PostCard
+                    //     key={i}
+                    //     author={post.node.post_author}
+                    //     category={post.node.post_category}
+                    //     title={post.node.post_title}
+                    //     date={post.node.post_date}
+                    //     description={post.node.post_preview_description}
+                    //     uid={post.node._meta.uid}
+                    // />
+                    <Feature 
+                        key={i}
+                        title={post.data.post_title}
+                        desc={post.data.post_preview_description}
+                        link={`/blog/${post.uid}`}
+                        imageLink={post.data.post_hero_image.url}
+                        date={post.data.post_date}
+                        isExternal={false}
+                    />
+                ))}
             </Layout>
-        </>
+        </div>
     )
 }
 
@@ -107,18 +115,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
     return {
         props: {
-            posts: posts.map(post => ({
-                node: {
-                    post_title: post.data.post_title,
-                    post_date: post.data.post_date,
-                    post_category: post.data.post_category,
-                    post_preview_description: post.data.post_preview_description,
-                    post_author: post.data.post_author,
-                    _meta: {
-                        uid: post.uid
-                    }
-                }
-            })),
+            posts: posts,
             meta,
         },
     }

@@ -7,30 +7,13 @@ import PropTypes from "prop-types";
 import Helmet from "react-helmet";
 import Layout from "../../components/Layout";
 import colors from "../../styles/colors";
-
-const ProjectHeroContainer = styled("div")`
-    background: ${colors.grey200};
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    overflow: hidden;
-    position: relative;
-    padding-top: 2.25em;
-    margin-bottom: 3.5em;
-
-    img {
-        max-width: 600px;
-    }
-`
+import { Image } from "@chakra-ui/react";
 
 const ProjectTitle = styled("div") `
-    max-width: 550px;
     margin: 0 auto;
-    text-align: center;
 `
 
 const ProjectBody = styled("div")`
-    max-width: 550px;
     margin: 0 auto;
 
     .block-img {
@@ -96,11 +79,9 @@ const Project = ({ project, meta }) => {
                     <PrismicRichText field={project.project_title} />
                 </ProjectTitle>
                 {project.project_hero_image && (
-                    <ProjectHeroContainer>
-                        <img src={project.project_hero_image.url} alt="bees" />
-                    </ProjectHeroContainer>
+                    <Image w="100%" src={project.project_hero_image.url} alt="bees" />
                 )}
-                <ProjectBody>
+                <ProjectBody className="reset-scope">
                     <PrismicRichText field={project.project_description} />
                     <WorkLink href={"/work"}>
                         <Button className="Button--secondary">
