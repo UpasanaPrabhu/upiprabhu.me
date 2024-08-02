@@ -6,13 +6,15 @@ import Layout from "../../components/Layout";
 import ProjectCard from "../../components/ProjectCard";
 import { GetStaticProps } from "next";
 import { createClient } from "@prismicio/client";
+import { Heading } from "@chakra-ui/react";
+import Feature from "../../components/Feature";
 
 const WorkTitle = styled("h1")`
     margin-bottom: 1em;
 `
 
 const Work = ({ projects, meta }) => (
-    <>
+    <div className="chakra-scope">
         <Helmet
             title={`Work`}
             titleTemplate={`%s | upiprabhu.me`}
@@ -52,23 +54,20 @@ const Work = ({ projects, meta }) => (
             ].concat(meta)}
         />
         <Layout>
-            <WorkTitle>
-                Work
-            </WorkTitle>
-            <>
-                {projects.map((project, i) => (
-                    <ProjectCard
-                        key={i}
-                        category={project.node.project_category}
-                        title={project.node.project_title}
-                        description={project.node.project_preview_description}
-                        thumbnail={project.node.project_preview_thumbnail}
-                        uid={project.node._meta.uid}
-                    />
-                ))}
-            </>
+            <Heading my={4} size="lg">Projects</Heading>
+            {projects.map((project, i) => (
+                <Feature
+                    key={i}
+                    title={project.data.project_title}
+                    desc={project.data.project_preview_description}
+                    link={`/work/${project.uid}`}
+                    imageLink={project.data.project_preview_thumbnail.url}
+                    date={project.data.project_post_date}
+                    isExternal={false}
+                />
+            ))}
         </Layout>
-    </>
+    </div>
 );
 
 export default Work
@@ -95,18 +94,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
     return {
         props: {
-            projects: projects.map(project => ({
-                node: {
-                    project_title: project.data.project_title,
-                    project_preview_description: project.data.project_preview_description,
-                    project_preview_thumbnail: project.data.project_preview_thumbnail,
-                    project_category: project.data.project_category,
-                    project_post_date: project.data.project_post_date,
-                    _meta: {
-                        uid: project.uid
-                    }
-                }
-            })),
+            projects,
             meta,
         },
     }

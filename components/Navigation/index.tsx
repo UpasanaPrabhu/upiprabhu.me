@@ -65,6 +65,12 @@ const Navigation = ({offset, wide = false}: NavProps) => {
                 </Button>
               </Link>
 
+              <Link href="/work">
+                <Button mr={2} variant="ghost" _hover={{backgroundColor: hoverBackgroundColor}}>
+                  Projects
+                </Button>
+              </Link>
+
               <Link href="/blog">
                 <Button mr={2} variant="ghost" _hover={{backgroundColor: hoverBackgroundColor}}>
                   Blog

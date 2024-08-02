@@ -73,15 +73,6 @@ export default function Blog({ posts, meta }) {
             <Layout>
                 <Heading my={4} size="lg">Blog</Heading>
                 {posts.map((post, i) => (
-                    // <PostCard
-                    //     key={i}
-                    //     author={post.node.post_author}
-                    //     category={post.node.post_category}
-                    //     title={post.node.post_title}
-                    //     date={post.node.post_date}
-                    //     description={post.node.post_preview_description}
-                    //     uid={post.node._meta.uid}
-                    // />
                     <Feature 
                         key={i}
                         title={post.data.post_title}
