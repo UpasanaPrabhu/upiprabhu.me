@@ -8,6 +8,42 @@ import Moment from 'react-moment';
 import colors from "../../styles/colors";
 import Layout from "../../components/Layout";
 
+// Custom components for PrismicRichText to handle embeds and links
+const richTextComponents = {
+    // Handle embedded videos (YouTube, Vimeo, etc.)
+    embed: ({ node }) => (
+        <div 
+            className="video-embed"
+            style={{
+                position: 'relative',
+                paddingBottom: '56.25%',
+                height: 0,
+                overflow: 'hidden',
+                maxWidth: '100%',
+                marginTop: '2em',
+                marginBottom: '2em',
+                borderRadius: '8px',
+            }}
+            dangerouslySetInnerHTML={{ __html: node.oembed.html }}
+        />
+    ),
+    // Style hyperlinks
+    hyperlink: ({ node, children }) => (
+        <a 
+            href={node.data.url}
+            target={node.data.target || '_blank'}
+            rel="noopener noreferrer"
+            style={{
+                color: colors.blue500,
+                textDecoration: 'underline',
+                transition: 'color 150ms ease-in-out',
+            }}
+        >
+            {children}
+        </a>
+    ),
+};
+
 const PostHeroContainer = styled("div")`
     max-height: 500px;
     overflow: hidden;
@@ -65,6 +101,20 @@ const PostBody = styled("div")`
         img {
             width: 100%;
         }
+    }
+
+    /* Video embed responsive styles */
+    .video-embed iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Link hover styles */
+    a:hover {
+        color: ${colors.blue600};
     }
 `
 
@@ -142,7 +192,7 @@ const Post = ({ post, meta }) => {
                     </PostHeroContainer>
                 )}
                 <PostBody className="reset-scope">
-                    <PrismicRichText field={post.post_body} />
+                    <PrismicRichText field={post.post_body} components={richTextComponents} />
                 </PostBody>
             </Layout>
         </>
@@ -174,6 +224,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
                 post_category: post.data.post_category,
                 post_preview_description: post.data.post_preview_description,
                 post_author: post.data.post_author,
+                post_hero_image: post.data.post_hero_image,
+                post_hero_annotation: post.data.post_hero_annotation,
                 post_body: post.data.post_body,
                 _meta: {
                     uid: post.uid
