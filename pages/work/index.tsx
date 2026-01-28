@@ -81,7 +81,7 @@ export const getStaticProps: GetStaticProps = async () => {
 
     const projects = await client.getAllByType('project', {
         orderings: {
-            field: 'my.project.project_date',
+            field: 'my.project.project_post_date',
             direction: 'desc',
         },
     })
