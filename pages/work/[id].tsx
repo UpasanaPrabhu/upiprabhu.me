@@ -9,6 +9,45 @@ import Layout from "../../components/Layout";
 import colors from "../../styles/colors";
 import { Image } from "@chakra-ui/react";
 
+// Custom components for PrismicRichText to handle embeds and links
+const richTextComponents = {
+    // Handle embedded videos (YouTube, Vimeo, etc.)
+    embed: ({ node }: { node: any }) => {
+        if (!node?.oembed?.html) return null;
+        return (
+            <div 
+                className="video-embed"
+                style={{
+                    position: 'relative',
+                    paddingBottom: '56.25%',
+                    height: 0,
+                    overflow: 'hidden',
+                    maxWidth: '100%',
+                    marginTop: '2em',
+                    marginBottom: '2em',
+                    borderRadius: '8px',
+                }}
+                dangerouslySetInnerHTML={{ __html: node.oembed.html }}
+            />
+        );
+    },
+    // Style hyperlinks
+    hyperlink: ({ node, children }: { node: any; children: React.ReactNode }) => (
+        <a 
+            href={node?.data?.url || '#'}
+            target={node?.data?.target || '_blank'}
+            rel="noopener noreferrer"
+            style={{
+                color: colors.blue500,
+                textDecoration: 'underline',
+                transition: 'color 150ms ease-in-out',
+            }}
+        >
+            {children}
+        </a>
+    ),
+};
+
 const ProjectTitle = styled("div") `
     margin: 0 auto;
 `
@@ -24,6 +63,20 @@ const ProjectBody = styled("div")`
             width: 100%;
         }
     }
+
+    /* Video embed responsive styles */
+    .video-embed iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Link hover styles */
+    a:hover {
+        color: ${colors.blue600};
+    }
 `
 
 const WorkLink = styled("a")`
@@ -33,11 +86,11 @@ const WorkLink = styled("a")`
 `
 
 
-const Project = ({ project, meta }) => {
+const Project = ({ project, meta }: { project: any; meta: any }) => {
     return (
         <>
             <Helmet
-                title={`${project.project_title[0].text}`}
+                title={`${project.project_title?.[0]?.text || 'Project'}`}
                 titleTemplate={`%s | ${meta.title}`}
                 meta={[
                     {
@@ -46,7 +99,7 @@ const Project = ({ project, meta }) => {
                     },
                     {
                         property: `og:title`,
-                        content: `${project.project_title[0].text} | upiprabhu.me`,
+                        content: `${project.project_title?.[0]?.text || 'Project'} | upiprabhu.me`,
                     },
                     {
                         property: `og:description`,
@@ -72,17 +125,17 @@ const Project = ({ project, meta }) => {
                         name: `twitter:description`,
                         content: meta.description,
                     },
-                ].concat(meta)}
+                ]}
             />
             <Layout>
                 <ProjectTitle>
                     <PrismicRichText field={project.project_title} />
                 </ProjectTitle>
-                {project.project_hero_image && (
-                    <Image w="100%" src={project.project_hero_image.url} alt="bees" />
+                {project.project_hero_image?.url && (
+                    <Image w="100%" src={project.project_hero_image.url} alt="project hero" />
                 )}
                 <ProjectBody className="reset-scope">
-                    <PrismicRichText field={project.project_description} />
+                    <PrismicRichText field={project.project_description} components={richTextComponents} />
                     <WorkLink href={"/work"}>
                         <Button className="Button--secondary">
                             See other work
@@ -103,7 +156,7 @@ export default Project
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     const client = createClient("upiprabhu")
 
-    const project = await client.getByUID('project', params.id as string)
+    const project = await client.getByUID('project', params?.id as string)
     const meta = {
         title: "Project",
         description: "Project",
