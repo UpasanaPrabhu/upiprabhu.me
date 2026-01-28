@@ -11,27 +11,30 @@ import Layout from "../../components/Layout";
 // Custom components for PrismicRichText to handle embeds and links
 const richTextComponents = {
     // Handle embedded videos (YouTube, Vimeo, etc.)
-    embed: ({ node }) => (
-        <div 
-            className="video-embed"
-            style={{
-                position: 'relative',
-                paddingBottom: '56.25%',
-                height: 0,
-                overflow: 'hidden',
-                maxWidth: '100%',
-                marginTop: '2em',
-                marginBottom: '2em',
-                borderRadius: '8px',
-            }}
-            dangerouslySetInnerHTML={{ __html: node.oembed.html }}
-        />
-    ),
+    embed: ({ node }: { node: any }) => {
+        if (!node?.oembed?.html) return null;
+        return (
+            <div 
+                className="video-embed"
+                style={{
+                    position: 'relative',
+                    paddingBottom: '56.25%',
+                    height: 0,
+                    overflow: 'hidden',
+                    maxWidth: '100%',
+                    marginTop: '2em',
+                    marginBottom: '2em',
+                    borderRadius: '8px',
+                }}
+                dangerouslySetInnerHTML={{ __html: node.oembed.html }}
+            />
+        );
+    },
     // Style hyperlinks
-    hyperlink: ({ node, children }) => (
+    hyperlink: ({ node, children }: { node: any; children: React.ReactNode }) => (
         <a 
-            href={node.data.url}
-            target={node.data.target || '_blank'}
+            href={node?.data?.url || '#'}
+            target={node?.data?.target || '_blank'}
             rel="noopener noreferrer"
             style={{
                 color: colors.blue500,
@@ -137,20 +140,20 @@ const PostDate = styled("div")`
     margin: 0;
 `
 
-const Post = ({ post, meta }) => {
+const Post = ({ post, meta }: { post: any; meta: any }) => {
     return (
         <>
             <Helmet
-                title={`${post.post_title[0].text}`}
+                title={`${post.post_title?.[0]?.text || 'Blog Post'}`}
                 titleTemplate={`%s | ${meta.title}`}
                 meta={[
                     {
                         name: `description`,
-                        content: `${post.post_preview_description[0].text}`,
+                        content: `${post.post_preview_description?.[0]?.text || ''}`,
                     },
                     {
                         property: `og:title`,
-                        content: `${post.post_title[0].text} | upiprabhu.me`,
+                        content: `${post.post_title?.[0]?.text || 'Blog Post'} | upiprabhu.me`,
                     },
                     {
                         property: `og:description`,
@@ -176,16 +179,16 @@ const Post = ({ post, meta }) => {
                         name: `twitter:description`,
                         content: meta.description,
                     },
-                ].concat(meta)}
+                ]}
             />
 
             <Layout>
                 <PostTitle>
                     <PrismicRichText field={post.post_title} />
                 </PostTitle>
-                    {post.post_hero_image && (
+                {post.post_hero_image?.url && (
                     <PostHeroContainer>
-                        <img src={post.post_hero_image.url} alt="bees" />
+                        <img src={post.post_hero_image.url} alt="hero" />
                         <PostHeroAnnotation>
                             <PrismicRichText field={post.post_hero_annotation} />
                         </PostHeroAnnotation>
@@ -209,7 +212,7 @@ export default Post
 export const getStaticProps: GetStaticProps = async ({ params }) => {
     const client = createClient("upiprabhu")
 
-    const post = await client.getByUID('post', params.id as string)
+    const post = await client.getByUID('post', params?.id as string)
     const meta = {
         title: "Blog",
         description: "Blog Post",
