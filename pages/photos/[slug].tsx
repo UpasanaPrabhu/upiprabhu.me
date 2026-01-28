@@ -3,16 +3,33 @@ import { Image, Heading, Box, Button, Container } from "@chakra-ui/react"
 import NextLink from 'next/link'
 import Lightbox from 'react-image-lightbox'
 import Gallery, { PhotoProps, RenderImageProps } from 'react-photo-gallery'
-import 'react-image-lightbox/style.css' // This only needs to be imported once in your app
+import 'react-image-lightbox/style.css'
 import Layout from '../../components/Layout'
 import { ChevronLeftIcon } from '@chakra-ui/icons'
-var Flickr = require('flickr-sdk');
-var flickr = new Flickr(process.env.FLICKR_API_KEY);
+
+// Only initialize Flickr if API key exists
+const Flickr = require('flickr-sdk');
+const flickr = process.env.FLICKR_API_KEY ? new Flickr(process.env.FLICKR_API_KEY) : null;
 
 function Home({ title, photos, sizes }){
   const PAGE_SIZE = 20
-  const thumbnailURLs = photos.map(photo => sizes[photo.id][6].source) // Small Square Size for Thumbnails
-  const lightboxURLs = photos.map(photo => sizes[photo.id][10].source) // Large 2048 for preview
+  
+  // Handle empty photos gracefully
+  if (!photos || photos.length === 0) {
+    return (
+      <Layout title="Photos" wide className="chakra-scope">
+        <Container maxW="container.lg">
+          <NextLink href="/photos">
+            <Button mt={6} mb={2} leftIcon={<ChevronLeftIcon/>} size="sm">Back to Photos</Button>
+          </NextLink>
+          <Heading mb={6}>No photos available</Heading>
+        </Container>
+      </Layout>
+    )
+  }
+
+  const thumbnailURLs = photos.map(photo => sizes[photo.id]?.[6]?.source).filter(Boolean)
+  const lightboxURLs = photos.map(photo => sizes[photo.id]?.[10]?.source).filter(Boolean)
 
   const [loadMoreEnabled, setLoadMoreEnabled] = useState(thumbnailURLs.length > PAGE_SIZE)
   const [numShownPhotos, setNumShownPhotos] = useState(PAGE_SIZE)
@@ -30,10 +47,10 @@ function Home({ title, photos, sizes }){
 
   const galleryLinks = ():PhotoProps[] => {
     const links = photos.slice(0, numShownPhotos).map(photo => ({
-      src: sizes[photo.id][6].source,
-      width: sizes[photo.id][6].width,
-      height: sizes[photo.id][6].height
-    }))
+      src: sizes[photo.id]?.[6]?.source || '',
+      width: sizes[photo.id]?.[6]?.width || 100,
+      height: sizes[photo.id]?.[6]?.height || 100
+    })).filter(link => link.src)
 
     return links
   }
@@ -107,14 +124,21 @@ function Home({ title, photos, sizes }){
   )
 }
 
-// This function gets called at build time on server-side.
-// It won't be called on client-side, so you can even do
-// direct database queries. See the "Technical details" section.
 export async function getStaticProps({ params }) {
-  // Call an external API endpoint to get posts.
   let title = ""
   let photos = []
   let sizes = {}
+
+  // Skip Flickr API calls if no API key
+  if (!flickr) {
+    return {
+      props: {
+        title: "Photos",
+        photos: [],
+        sizes: {}
+      }
+    }
+  }
 
   try {
     const infoRes = await flickr.photosets.getInfo({
@@ -149,9 +173,12 @@ export async function getStaticProps({ params }) {
   }
 }
 
-// This function gets called at build time
 export async function getStaticPaths() {
-  // Call an external API endpoint to get posts
+  // Skip if no Flickr API key
+  if (!flickr) {
+    return { paths: [], fallback: false }
+  }
+
   let photosets = []
   try {
     const res = await flickr.photosets.getList({
@@ -162,11 +189,8 @@ export async function getStaticPaths() {
     console.error('bonk', err);
   }
 
-  // Get the paths we want to pre-render based on posts
   const paths = photosets.map(photoset => `/photos/${photoset.id}`)
 
-  // We'll pre-render only these paths at build time.
-  // { fallback: false } means other routes should 404.
   return { paths, fallback: false }
 }
 

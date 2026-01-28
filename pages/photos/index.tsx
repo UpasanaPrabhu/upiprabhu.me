@@ -2,17 +2,31 @@ import React, { useState } from 'react'
 import { Box, Image, SimpleGrid, Text, Heading, Button, Container } from "@chakra-ui/react"
 import NextLink from 'next/link'
 import Lightbox from 'react-image-lightbox'
-import 'react-image-lightbox/style.css' // This only needs to be imported once in your app
+import 'react-image-lightbox/style.css'
 import Gallery, { PhotoProps, RenderImageProps } from 'react-photo-gallery'
 import Layout from '../../components/Layout'
-var Flickr = require('flickr-sdk')
-var flickr = new Flickr(process.env.FLICKR_API_KEY)
+
+// Only initialize Flickr if API key exists
+const Flickr = require('flickr-sdk')
+const flickr = process.env.FLICKR_API_KEY ? new Flickr(process.env.FLICKR_API_KEY) : null
 
 const Photos = ({ title, photosets, photos, sizes }) => {
   const PAGE_SIZE = 20
 
-  const thumbnailURLs = photos.map(photo => sizes[photo.id][6].source) // Small Square Size for Thumbnails
-  const lightboxURLs = photos.map(photo => sizes[photo.id][10].source) // Large 2048 for preview
+  // Handle empty photos gracefully
+  if (!photos || photos.length === 0) {
+    return (
+      <Layout title="Photos" wide className="chakra-scope">
+        <Container maxW="container.lg">
+          <Heading size="lg" mt={6}>{title}</Heading>
+          <Text mt={4}>No photos available at this time.</Text>
+        </Container>
+      </Layout>
+    )
+  }
+
+  const thumbnailURLs = photos.map(photo => sizes[photo.id]?.[6]?.source).filter(Boolean)
+  const lightboxURLs = photos.map(photo => sizes[photo.id]?.[10]?.source).filter(Boolean)
 
   const [loadMoreEnabled, setLoadMoreEnabled] = useState(thumbnailURLs.length > PAGE_SIZE)
   const [numShownPhotos, setNumShownPhotos] = useState(PAGE_SIZE)
@@ -38,10 +52,10 @@ const Photos = ({ title, photosets, photos, sizes }) => {
 
   const galleryLinks = ():PhotoProps[] => {
     const links = photos.slice(0, numShownPhotos).map(photo => ({
-      src: sizes[photo.id][6].source,
-      width: sizes[photo.id][6].width,
-      height: sizes[photo.id][6].height
-    }))
+      src: sizes[photo.id]?.[6]?.source || '',
+      width: sizes[photo.id]?.[6]?.width || 100,
+      height: sizes[photo.id]?.[6]?.height || 100
+    })).filter(link => link.src)
 
     return links
   }
@@ -88,45 +102,48 @@ const Photos = ({ title, photosets, photos, sizes }) => {
             Shot on iPhone
           </Heading>
 
-          <Heading size="md" pb={2} pt={5}>Collections</Heading>
-          <SimpleGrid columns={{base: 2, sm:3, md: 5}} spacing={2} pb={6}>
-            {photosets.map(photoset => (
-              <NextLink key={photoset.id} href={`/photos/[slug]`} as={`/photos/${photoset.id}`}>
-                <Box
-                  cursor="pointer"
-                  // maxW="100px"
-                  rounded="lg"
-                  overflow="hidden"
-                  position="relative"
-                  transition="all .25s ease-in-out"
-                  _hover={{transform: "scale(1.012)"}}>
+          {photosets && photosets.length > 0 && (
+            <>
+              <Heading size="md" pb={2} pt={5}>Collections</Heading>
+              <SimpleGrid columns={{base: 2, sm:3, md: 5}} spacing={2} pb={6}>
+                {photosets.map(photoset => (
+                  <NextLink key={photoset.id} href={`/photos/[slug]`} as={`/photos/${photoset.id}`}>
+                    <Box
+                      cursor="pointer"
+                      rounded="lg"
+                      overflow="hidden"
+                      position="relative"
+                      transition="all .25s ease-in-out"
+                      _hover={{transform: "scale(1.012)"}}>
 
-                  <Image src={photoset.primary_photo_extras.url_m} />
+                      <Image src={photoset.primary_photo_extras?.url_m} />
 
-                  <Box
-                    position="absolute"
-                    top="0px"
-                    bottom="0px"
-                    left="0px"
-                    right="0px"
-                    background="linear-gradient(rgba(26, 32, 44, 0)  15%, rgba(26, 32, 44, 0.65) 50%, rgba(26, 32, 44, 0.8) 100%)"
-                  />
+                      <Box
+                        position="absolute"
+                        top="0px"
+                        bottom="0px"
+                        left="0px"
+                        right="0px"
+                        background="linear-gradient(rgba(26, 32, 44, 0)  15%, rgba(26, 32, 44, 0.65) 50%, rgba(26, 32, 44, 0.8) 100%)"
+                      />
 
-                  <Text
-                    px={4}
-                    pt={6}
-                    pb={2}
-                    color="white"
-                    position="absolute"
-                    bottom="0px"
-                    fontWeight="semibold"
-                    fontSize="lg">
-                      {photoset.title._content}
-                  </Text>
-                </Box>
-              </NextLink>
-            ))}
-          </SimpleGrid>
+                      <Text
+                        px={4}
+                        pt={6}
+                        pb={2}
+                        color="white"
+                        position="absolute"
+                        bottom="0px"
+                        fontWeight="semibold"
+                        fontSize="lg">
+                          {photoset.title?._content}
+                      </Text>
+                    </Box>
+                  </NextLink>
+                ))}
+              </SimpleGrid>
+            </>
+          )}
 
 
           <Heading size="md" pt={4} pb={2}>Recent Photos</Heading>
@@ -154,6 +171,18 @@ export async function getStaticProps({ params }) {
   let photosets = []
   let photos = []
   let sizes = {}
+
+  // Skip Flickr API calls if no API key
+  if (!flickr) {
+    return {
+      props: {
+        title: title,
+        photosets: [],
+        photos: [],
+        sizes: {}
+      }
+    }
+  }
 
   try {
     const photosetResponse = await flickr.photosets.getList({
